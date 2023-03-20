@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optim8 Staffing Sheets", "Optim8 Staffing Sheets\Optim8 Staffing Sheets.csproj", "{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optim8 Staffing Sheets Rides", "Optim8 Staffing Sheets\Optim8 Staffing Sheets Rides.csproj", "{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
