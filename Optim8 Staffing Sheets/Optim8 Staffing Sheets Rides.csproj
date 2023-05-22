@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChromeDriverInstaller.cs" />
+    <Compile Include="parseHTML.cs" />
     <Compile Include="Ride Staffing Sheets.cs">
       <SubType>Form</SubType>
     </Compile>
