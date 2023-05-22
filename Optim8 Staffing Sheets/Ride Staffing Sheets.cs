@@ -239,6 +239,67 @@ namespace Optim8_Staffing_Sheets
                         //Deletes table file
                         //File.Delete(appDataFolder + "\\rawTable.dat");
 
+                        //Adding a Custom Sort to put ride pairings together
+                        List<String> rideSortOrderReversed = new List<String> {
+                            //Area 4
+                            "1330 - BBNP East",
+                            "1140 - Mine Train",
+
+                            "1430 - Tsunami Soaker",
+                            "1020 - Joker",
+                            "1290 - Ninja",
+
+                            "1440 - Spinsanity",
+                            "1180 - Batman the Ride",
+
+                            //Area 3
+                            "1280 - Colossus",
+                            "1130 - Railroad",
+
+                            "1190 - Shazam!",
+                            "1210 - Justice League: Battle For Metropolis",
+
+                            "1040 - Log Flume",
+                            "1060 - American Thunder",
+
+                            //Area 2
+                            "1230 - Fireball",
+                            "1420 - SkyScreamer", 
+                            
+                            "1091 - Catwoman Whip",
+                            "1240 - Boomerang",
+
+                            "1320 - BBNP North",
+                            "1150 - Screamin' Eagle",
+
+                            //Area 1
+                            "1070 - Grand Ole Carousel",
+                            "1030 - Rookie Racer",
+
+                            "1110 - Mr. Freeze",
+                            "1100 - Thunder River",
+
+                            "1340 - BBNP West",
+                            "1310 - Pandemonium",
+
+                            "1080 - Supergirl",
+                            "1410 - The Boss",
+                            ""
+                        };
+
+                        //var people4 = people.OrderBy(i => i.m_end).ToList();
+                        //var people2 = people4.OrderBy(i => i.m_start).ToList();
+                        //var people2 = people.OrderBy(i => i.m_ride.Contains("PS Area")).ThenBy(i => i.m_ride.Contains("Restroom")).ToList();
+                        //var people2 = people.OrderBy(i=> i.m_ride).ThenBy(i => i.m_ride.Contains("PS Area")).ThenBy(i => i.m_ride.Equals("")).ToList();
+                        var people3 = people.OrderByDescending(i => rideSortOrderReversed.IndexOf(i.m_ride)).ToList();
+
+                        //var people2 = people.OrderBy(o => o.m_ride).ToList<individualSchedule>();
+
+                        people = people3;
+
+
+
+
 
                         //[ride][shift][person]
                         //Making a list of rides
