@@ -678,7 +678,7 @@ namespace Optim8_Staffing_Sheets
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Last Updated: 2/14/2023\nContact: Thomas Robert\nEmail: tRobert@sftp.com");
+            MessageBox.Show("Last Updated: 5/21/2023\n\nContact: Thomas Robert\nEmail: tRobert@sftp.com");
         }
     }
 }
