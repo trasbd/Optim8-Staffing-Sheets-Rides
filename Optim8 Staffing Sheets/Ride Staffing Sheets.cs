@@ -739,7 +739,13 @@ namespace Optim8_Staffing_Sheets
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Last Updated: 5/21/2023\n\nContact: Thomas Robert\nEmail: tRobert@sftp.com");
+            MessageBox.Show("Last Updated: 2024/04/08\n\nContact: Thomas Robert\nEmail: tRobert@sftp.com");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://googlechromelabs.github.io/chrome-for-testing/");
+            Process.Start(Directory.GetCurrentDirectory());
         }
     }
 }

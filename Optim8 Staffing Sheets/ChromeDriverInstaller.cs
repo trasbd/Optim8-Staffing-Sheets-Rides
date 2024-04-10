@@ -15,7 +15,8 @@ public class ChromeDriverInstaller
     private static readonly HttpClient httpClient = new HttpClient
     {
         //BaseAddress = new Uri("https://chromedriver.storage.googleapis.com/")
-        BaseAddress = new Uri("https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/")
+        //BaseAddress = new Uri("https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/")
+        BaseAddress = new Uri("https://storage.googleapis.com/chrome-for-testing-public/")
     };
 
     public Task Install() => Install(null, false);
