@@ -12,6 +12,9 @@ using System.Threading;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
+using SeleniumExtras.WaitHelpers;
+
+
 namespace Optim8_Staffing_Sheets
 {
     public partial class Form1 : Form
@@ -19,6 +22,7 @@ namespace Optim8_Staffing_Sheets
         public IWebDriver driver;
         public int sheetsMade = 0;
         public string appDataFolder = Directory.GetCurrentDirectory();
+        public WebDriverWait wait;
         //public string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Ride Staffing Sheets";
 
 
@@ -33,7 +37,7 @@ namespace Optim8_Staffing_Sheets
         private void button1_Click(object sender, EventArgs e)
         {
             //Variables
-            int areaNumber = cbArea.SelectedIndex+1;
+            int areaNumber = cbArea.SelectedIndex + 1;
             DateTime dateWanted = dtpDate.Value;
             double shiftStartTimeAlloance = .77; //In hours
 
@@ -52,121 +56,135 @@ namespace Optim8_Staffing_Sheets
                 Application.DoEvents();
                 try
                 {
-                    //if the driver isnt already open
+
+
                     if (driver == null)
                     {
                         ChromeOptions options = new ChromeOptions();
 
-                        //Disables images so it loads faster
                         options.AddUserProfilePreference("profile.default_content_setting_values.images", 2);
                         options.AddArgument("headless");
+
                         ChromeDriverService service = ChromeDriverService.CreateDefaultService();
                         service.HideCommandPromptWindow = true;
                         driver = new ChromeDriver(service, options);
-                        
-                        //makes form ontop of web browser
-                        //this.TopMost = true;
-                        //Go to sixflags.team
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+                        // Go to sixflags.team
                         driver.Navigate().GoToUrl("http://sixflags.team");
-                        //finds login link
-                        IWebElement loginLink = driver.FindElement(By.Id("alogin1"));
-                        //clicks login link to display login block
-                        loginLink.Click();
 
-                        //Finds text boxes Company, User ID, and Password
-                        IWebElement companyTxt = driver.FindElement(By.Id("txtCompany"));
-                        IWebElement idTxt = driver.FindElement(By.Id("txtuserid"));
-                        IWebElement passTxt = driver.FindElement(By.Id("txtpwd"));
+                        wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("alogin1"))).Click();
 
-                        //Sends the text entered in Form to text boxes on sixflags.team
-                        companyTxt.SendKeys(txtCompany.Text);
+                        // Fill out login form
+                        wait.Until(ExpectedConditions.ElementIsVisible(By.Id("txtCompany"))).SendKeys(txtCompany.Text);
+                        // Wait for and type in user ID
+                        IWebElement idTxt = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("txtuserid")));
                         idTxt.SendKeys(txtID.Text);
+
+                        // Wait for and type in password
+                        IWebElement passTxt = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("txtpwd")));
                         passTxt.SendKeys(txtPass.Text);
 
-                        //Finds login button
-                        IWebElement login = driver.FindElement(By.Id("btnlogin1"));
-                        //click login button
-                        login.Click();
-                        //makes form no longer on top of everything
+                        driver.FindElement(By.Id("btnlogin1")).Click();
+
                         this.TopMost = false;
-                        //if the url doesn't contain "/tm" then it didnt get redirected after logging in
-                        //So something went wrong in the login process
-                        //Most possible source of error is invalid username or password
+
+                        // Wait for redirect
+                        wait.Until(d => d.Url.Contains("/tm"));
+
                         if (!driver.Url.Contains("/tm"))
                         {
-
-                            lblError.Text = "Could not Login. Please check Username and Passowrd.";
-                            //closes browser
+                            lblError.Text = "Could not Login. Please check Username and Password.";
                             driver.Quit();
-                            //sets driver to null
                             driver = null;
+                            return;
                         }
                     }
 
-                    //After sucessful login
-
-                    //Redirect Browser to the scheduling webpage
+                    // After login, go to scheduling page
                     driver.Navigate().GoToUrl("http://sixflags.team/tm/tm/schedule");
 
-                    //finds the department Drop Down element
+                    WebDriverWait pageWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+                    // Wait for dropdown to appear
+                    pageWait.Until(ExpectedConditions.ElementExists(By.Id("ddd2")));
                     SelectElement departmentDropDown = new SelectElement(driver.FindElement(By.Id("ddd2")));
-                    //Sets the department to 'blank' because some areas have attractions and rides
                     departmentDropDown.SelectByIndex(0);
 
-                    //Finds the Drop Down to select ride area
+                    // Wait for ride area dropdown to populate with the correct value
+                    pageWait.Until(d =>
+                    {
+                        try
+                        {
+                            var select = new SelectElement(d.FindElement(By.Id("ddarea")));
+                            return select.Options.Any(o => o.Text.Trim() == "Rides Area " + areaNumber);
+                        }
+                        catch (StaleElementReferenceException)
+                        {
+                            return false; // retry wait
+                        }
+                        catch (NoSuchElementException)
+                        {
+                            return false; // still loading
+                        }
+                    });
+
                     SelectElement areaDropDown = new SelectElement(driver.FindElement(By.Id("ddarea")));
-                    //Sets the ride area to the number selected on form
                     areaDropDown.SelectByText("Rides Area " + areaNumber);
 
-                    //Finds the date from box
+                    // Fill in dates
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.Id("txtFrom")));
                     IWebElement dateFrom = driver.FindElement(By.Id("txtFrom"));
-                    //clears it so its ready to recieve a new date typed in
                     dateFrom.Clear();
-                    //Sends dateWanted to date from box
                     dateFrom.SendKeys(dateWanted.ToShortDateString());
-                    //Same as date from but its date to
+
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.Id("txtTo")));
                     IWebElement dateTo = driver.FindElement(By.Id("txtTo"));
                     dateTo.Clear();
                     dateTo.SendKeys(dateWanted.ToShortDateString());
 
-                    //finds the go button
+
                     IWebElement goBtn = driver.FindElement(By.Id("divgo"));
 
-                    //Finds the table where schedules will be displayed
-                    //IWebElement scheduleTable = driver.FindElement(By.Id("tbgrid1"));
-                    IWebElement scheduleTable = driver.FindElement(By.Id("divgrid0"));
+                    // Scroll it into view
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({block: 'center'});", goBtn);
+                    Thread.Sleep(100); // Give scroll time if needed
 
-                    //before new table is generated saves old table for comparison
-                    String oldTable = scheduleTable.Text;
-
-                    //Clicks Go to load new table
                     goBtn.Click();
 
-                    //Grabs new table
-                    String rawTable = scheduleTable.Text;
 
+
+                    // Save old table
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.Id("divgrid0")));
+                    IWebElement scheduleTable = driver.FindElement(By.Id("divgrid0"));
+                    String oldTable = scheduleTable.Text;
+
+                    //goBtn.Click();
+
+                    // Wait for the new table to update
                     int looped = 0;
                     bool again = true;
+                    string rawTable = "";
 
                     while (again)
                     {
-                        //If new table is the same as old table it pulls in the table again
-                        if (rawTable.Equals(oldTable))
-                            again = true;
-                        else
-                            again = false;
                         rawTable = scheduleTable.Text;
+
+                        if (!rawTable.Equals(oldTable) && rawTable.Contains("Total Hours"))
+                        {
+                            again = false;
+                        }
+
                         looped++;
-                        if (!rawTable.Contains("Total Hours"))
-                            again = true;
-                        //if the old table is the same as the new table after pulling it 100 times
-                        //its probaly the table we want
                         if (looped > 100)
                             again = false;
 
+                        Thread.Sleep(100); // small delay to prevent tight loop
                     }
 
-                   
+
+
                     ///*
                     //while (!rawTable.Contains(dateWanted.ToShortDateString()) || !rawTable.Contains("Department Location Position Seq. Time"))
                     //{
@@ -176,7 +194,7 @@ namespace Optim8_Staffing_Sheets
                     //
 
 
-                    
+
                     //Removes unnessicary strings
                     rawTable = rawTable.Replace("Ride Operations ", "");
                     rawTable = rawTable.Replace("Arcade Att ", "");
@@ -192,7 +210,7 @@ namespace Optim8_Staffing_Sheets
 
                     //Reading table file
                     //System.IO.StreamReader file = new System.IO.StreamReader(appDataFolder+"\\rawTable.dat");
-                    
+
                     // convert string to stream
                     byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(rawTable);
                     //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
@@ -264,8 +282,8 @@ namespace Optim8_Staffing_Sheets
 
                             //Area 2
                             "1230 - Fireball",
-                            "1420 - SkyScreamer", 
-                            
+                            "1420 - SkyScreamer",
+
                             "1091 - Catwoman Whip",
                             "1240 - Boomerang",
 
@@ -313,7 +331,7 @@ namespace Optim8_Staffing_Sheets
                         //Creating the correct number of rides with ride names for everyone
                         for (int i = 1; i < people.Count(); i++)
                         {
-                            
+
                             //if the ride name of current person is different from the previous person
                             if (!people.ElementAt(i).m_ride.Equals(people.ElementAt(i - 1).m_ride))
                             {
@@ -333,7 +351,7 @@ namespace Optim8_Staffing_Sheets
                         //*************************************************
                         //**SORTS PEOPLE INTO DAY, SWING, AND NIGHT SHIFT**
                         //*************************************************
-                        
+
                         int count = 0;
                         //for each ride
                         foreach (var ride in area)
@@ -385,7 +403,7 @@ namespace Optim8_Staffing_Sheets
                                                     {
                                                         ride.m_shift[3].m_crew.Add(person);
                                                     }
-                                                        //if they dont fit within 1 hour of the other list they are put here                                                    
+                                                    //if they dont fit within 1 hour of the other list they are put here                                                    
                                                     else
                                                     {
                                                         ride.m_shift[4].m_crew.Add(person);
@@ -523,7 +541,7 @@ namespace Optim8_Staffing_Sheets
 
                         //Opens up excel file
                         System.Diagnostics.Process proc = new System.Diagnostics.Process();
-                        proc.StartInfo.FileName = appDataFolder +fileName;
+                        proc.StartInfo.FileName = appDataFolder + fileName;
                         proc.StartInfo.UseShellExecute = true;
                         proc.Start();
 
@@ -543,13 +561,14 @@ namespace Optim8_Staffing_Sheets
                 catch (Exception ex)
                 {
                     //plswait.Abort();
+                    ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile("click_fail.png");
 
                     if (driver != null)
                     {
                         driver.Quit();
                         driver = null;
                     }
-                    
+
                     if (ex.ToString().Contains("incorrect"))
                     {
                         lblError.Text = "Make sure your Username and Password are correct.";
@@ -557,19 +576,20 @@ namespace Optim8_Staffing_Sheets
                     else
                     {
                         //MessageBox.Show(this, "An Error has occured. Please try again.", "", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
                         MessageBox.Show("An Error has occured. Please try again.\n" + ex.ToString());
                     }
                 }
 
                 Cursor.Current = Cursors.Default;
-            
-    }
+
+            }
             //plswait.Abort();
 
         }
 
 
-                
+
         //Creates a Staffing Sheet Excel spreadsheet for an Area for a certain Date passed
         //Pre: area really should contain at least 1 ride (will make blank staffing sheet if 0 rides)
         //Post: Creates an .xls file in the program directory
@@ -589,7 +609,7 @@ namespace Optim8_Staffing_Sheets
                 Excel.Worksheet xlWorkSheet;
 
 
-                
+
                 //From what I understand misValue is used similar to null/default
                 object misValue = System.Reflection.Missing.Value;
 
@@ -603,7 +623,7 @@ namespace Optim8_Staffing_Sheets
                 xlWorkSheet.Cells[1, 5] = dateWanted.ToShortDateString();
 
                 //If previous date puts message saying the staffing sheet may not reflect the actual operators at the ride at that time
-                if (DateTime.Compare(dateWanted.Date, DateTime.Now.Date)<0)
+                if (DateTime.Compare(dateWanted.Date, DateTime.Now.Date) < 0)
                 {
                     xlWorkSheet.Cells[1, 3] = "*May not represent accurate staffing for previous days*";
                 }
@@ -620,19 +640,19 @@ namespace Optim8_Staffing_Sheets
                     xlWorkSheet.Cells[row, 3].HorizontalAlignment = 3;
 
                     //skips down 2 rows
-                    row+=2;
-                    int max_row=0;
-                    int start_row=row;
-                    for (int i =1; i<5;i++)
+                    row += 2;
+                    int max_row = 0;
+                    int start_row = row;
+                    for (int i = 1; i < 5; i++)
                     {
                         start_row = row;
-                        int col=0;
-                        if (ride.m_shift[i].m_shiftTime==shiftTime.Day)
-                            col=1;
+                        int col = 0;
+                        if (ride.m_shift[i].m_shiftTime == shiftTime.Day)
+                            col = 1;
                         else if (ride.m_shift[i].m_shiftTime == shiftTime.Swing)
                             col = 3;
                         else if (ride.m_shift[i].m_shiftTime == shiftTime.Night)
-                            col =5;
+                            col = 5;
 
                         foreach (var person in ride.m_shift[i].m_crew)
                         {
@@ -640,27 +660,27 @@ namespace Optim8_Staffing_Sheets
                             string colC;
                             switch (col)
                             {
-                                case(1):
-                                    colC="a";
-                                        break;
-                                case(3):
-                                        colC = "c";
-                                        break;
-                                case(5):
-                                        colC = "e";
-                                        break;
+                                case (1):
+                                    colC = "a";
+                                    break;
+                                case (3):
+                                    colC = "c";
+                                    break;
+                                case (5):
+                                    colC = "e";
+                                    break;
                                 default:
-                                        colC = "a";
+                                    colC = "a";
                                     break;
                             }
-                            xlWorkSheet.get_Range(colC+start_row, colC+start_row).Borders[Excel.XlBordersIndex.xlEdgeBottom].Color = System.Drawing.Color.Black;
+                            xlWorkSheet.get_Range(colC + start_row, colC + start_row).Borders[Excel.XlBordersIndex.xlEdgeBottom].Color = System.Drawing.Color.Black;
                             start_row++;
                         }
                         if (start_row > max_row)
                             max_row = start_row;
 
                     }
-                    row=max_row+1;
+                    row = max_row + 1;
                 }
                 row++;
                 //xlWorkSheet.Cells[row, "e"] = "RIP Thomas Robert";
@@ -668,8 +688,8 @@ namespace Optim8_Staffing_Sheets
                 xlWorkSheet.Columns.AutoFit();
 
                 //saves to program directory 
-                xlWorkBook.SaveAs(appDataFolder+filename,Excel.XlFileFormat.xlWorkbookNormal,misValue,misValue,misValue,misValue,Excel.XlSaveAsAccessMode.xlExclusive,misValue,misValue,misValue,misValue,misValue);
-                
+                xlWorkBook.SaveAs(appDataFolder + filename, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+
                 //Closes file correctly
                 xlWorkBook.Close(true, misValue, misValue);
                 xlApp.Quit();
@@ -678,7 +698,7 @@ namespace Optim8_Staffing_Sheets
                 Marshal.ReleaseComObject(xlWorkBook);
                 Marshal.ReleaseComObject(xlApp);
 
- 
+
             }
             //return is void
             return;
@@ -698,7 +718,7 @@ namespace Optim8_Staffing_Sheets
             //if the browser is still connected
             if (driver != null)
             {
-                
+
                 //quits the driver
                 driver.Quit();
                 //sets driver to null
@@ -739,7 +759,7 @@ namespace Optim8_Staffing_Sheets
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Last Updated: 2024/04/08\n\nContact: Thomas Robert\nEmail: tRobert@sftp.com");
+            MessageBox.Show("Last Updated:\n\t2025-07-11\n\nContact:\n\tThomas Robert\n\thttps://github.com/trasbd/");
         }
 
         private void button2_Click(object sender, EventArgs e)
