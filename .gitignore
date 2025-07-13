@@ -28,3 +28,4 @@ project.fragment.lock.json
 *.log
 *.cache
 *.vs/
+/O8SS-WebRequest/Sample Request

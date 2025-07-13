@@ -24,12 +24,15 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.labelTitle = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.linkWebsite = new System.Windows.Forms.LinkLabel();
             this.labelLicense = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // labelTitle
@@ -91,10 +94,20 @@
             this.labelLicense.Text = "This software is licensed under the MIT License.\nSee GitHub for full details.";
             this.labelLicense.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 58);
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
             // AboutForm
             // 
             this.AcceptButton = this.buttonOK;
             this.ClientSize = new System.Drawing.Size(384, 220);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.labelCopyright);
@@ -107,6 +120,7 @@
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -119,5 +133,6 @@
         private System.Windows.Forms.LinkLabel linkWebsite;
         private System.Windows.Forms.Label labelLicense;
         private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

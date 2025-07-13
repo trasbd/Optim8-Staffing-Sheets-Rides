@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -150,7 +151,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(502, 121);
+            this.button3.Location = new System.Drawing.Point(449, 111);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 28);
@@ -189,8 +190,9 @@
             this.Controls.Add(this.txtPass);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.txtCompany);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Staffing Sheets";
             this.ResumeLayout(false);
             this.PerformLayout();
 

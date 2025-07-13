@@ -32,7 +32,7 @@ namespace O8SS_WebRequest
             {
                 var response = await _client.PostAsync(loginUrl, loginData);
                 var content = await response.Content.ReadAsStringAsync();
-                return response.IsSuccessStatusCode && !content.Contains("Invalid");
+                return response.IsSuccessStatusCode && !content.Contains("not correct");
             }
             catch
             {
