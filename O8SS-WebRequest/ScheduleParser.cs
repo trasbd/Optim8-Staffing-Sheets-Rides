@@ -126,6 +126,52 @@ namespace O8SS_WebRequest
         }
 
 
+        
+
+        public static Dictionary<int, string> ParseHomeLocationHtml(string html)
+        {
+            var result = new Dictionary<int, string>();
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(html);
+
+            // Look for table rows with 'rowid' attribute (actual employee rows)
+            var rows = doc.DocumentNode.SelectNodes("//tr[@rowid]");
+            if (rows == null) return result;
+
+            foreach (var row in rows)
+            {
+                var cells = row.SelectNodes("td");
+                if (cells == null || cells.Count < 7)
+                    continue;
+
+                string empNumber = cells[1].InnerText.Trim();   // column 2 = Employee Number
+                string location = WebUtility.HtmlDecode(cells[6].InnerText.Trim()); // column 7 = Location
+
+                if (!string.IsNullOrWhiteSpace(empNumber) && !string.IsNullOrWhiteSpace(location))
+                {
+                    result.Add(SafeParseInt(empNumber), location);
+                }
+            }
+
+            return result;
+        }
+
+
+        public static List<ScheduleEntry> CombineRestrooms(List<ScheduleEntry> schedule, Dictionary<int, string> homes)
+        {
+            
+            foreach (var restroomSchedule in schedule.FindAll(x => x.LocationName.Contains("Restroom")))
+            {
+                restroomSchedule.Restroom = true;
+                if (homes.TryGetValue(restroomSchedule.EID, out string newLocation))
+                {
+                    restroomSchedule.LocationName = newLocation;
+                }
+            }
+
+            return schedule;
+        }
+
         private static int SafeParseInt(string input)
         {
             if (int.TryParse(input, out int result))

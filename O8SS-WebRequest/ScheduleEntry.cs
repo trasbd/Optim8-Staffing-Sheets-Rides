@@ -16,6 +16,7 @@ namespace O8SS_WebRequest
         public string DepartmentName { get; set; }
         public string LocationName { get; set; }
         public string PositionName { get; set; }
+        public bool Restroom { get; set; } = false;
         public int Sequence { get; set; }
         public string TimeRange { get; set; }
         public string Date { get; set; }

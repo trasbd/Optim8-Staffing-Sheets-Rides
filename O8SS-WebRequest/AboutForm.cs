@@ -8,6 +8,11 @@ namespace O8SS_WebRequest
         public AboutForm()
         {
             InitializeComponent();
+
+            DateTime buildDate = System.IO.File.GetLastWriteTime(
+                System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            labelVersion.Text = $"Version {buildDate:yyyy.MM.dd}";
         }
 
         private void buttonOK_Click(object sender, EventArgs e)

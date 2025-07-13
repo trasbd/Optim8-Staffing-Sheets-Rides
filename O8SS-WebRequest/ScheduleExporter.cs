@@ -9,7 +9,7 @@ namespace O8SS_WebRequest
 {
     public class ScheduleExporter
     {
-        public static void ExportToExcel(List<ScheduleEntry> entries, string filePath, List<string> locationOrder)
+        public static void ExportToExcel(List<ScheduleEntry> entries, string filePath, List<string> locationOrder, bool parkServices)
         {
 
             string Area = entries.FirstOrDefault()?.Area;
@@ -71,12 +71,14 @@ namespace O8SS_WebRequest
                 var earliest = list.Min(e => e.StartDateTime.TimeOfDay);
                 var latest = list.Max(e => e.StartDateTime.TimeOfDay);
 
+                int shiftOffset = parkServices ? 60 : 45;
+
                 var dayShift = list.Where(e =>
-                    (e.StartDateTime.TimeOfDay - earliest).TotalMinutes <= 45 &&
+                    (e.StartDateTime.TimeOfDay - earliest).TotalMinutes <= shiftOffset &&
                     (e.StartDateTime.TimeOfDay - earliest).TotalMinutes >= 0).ToList();
 
-                var nightShift = list.Where(e =>
-                    (latest - e.StartDateTime.TimeOfDay).TotalMinutes <= 45 &&
+                var nightShift = list.Except(dayShift).Where(e =>
+                    (latest - e.StartDateTime.TimeOfDay).TotalMinutes <= shiftOffset &&
                     (latest - e.StartDateTime.TimeOfDay).TotalMinutes >= 0).ToList();
 
                 var swingShift = list.Except(dayShift).Except(nightShift).ToList();
@@ -94,6 +96,12 @@ namespace O8SS_WebRequest
 
                         if (shift.Age == AgeGroup.YellowTag)
                             cell.Style.Fill.BackgroundColor = XLColor.Yellow;
+
+                        if(shift.Restroom && !string.IsNullOrEmpty(shift.Name))
+                        {
+                            cell.Value += " - R";
+                            cell.Style.Font.SetBold(true);
+                        }
                     }
 
                     if (i < swingShift.Count)
@@ -105,6 +113,12 @@ namespace O8SS_WebRequest
 
                         if (shift.Age == AgeGroup.YellowTag)
                             cell.Style.Fill.BackgroundColor = XLColor.Yellow;
+
+                        if(shift.Restroom && !string.IsNullOrEmpty(shift.Name))
+                        {
+                            cell.Value += " - R";
+                            cell.Style.Font.SetBold(true);
+                        }
                     }
 
                     if (i < nightShift.Count)
@@ -116,6 +130,12 @@ namespace O8SS_WebRequest
 
                         if (shift.Age == AgeGroup.YellowTag)
                             cell.Style.Fill.BackgroundColor = XLColor.Yellow;
+
+                        if (shift.Restroom && !string.IsNullOrEmpty(shift.Name))
+                        {
+                            cell.Value += " - R";
+                            cell.Style.Font.SetBold(true);
+                        }
                     }
                 }
 

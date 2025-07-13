@@ -75,7 +75,7 @@ namespace O8SS_WebRequest
         }
 
 
-        public async Task<List<ScheduleEntry>> FetchScheduleAsync(string date, KeyValuePair<int, string> area)
+        public async Task<List<ScheduleEntry>> FetchScheduleAsync(string date, KeyValuePair<int, string> area, bool parkServices)
         {
             string scheduleUrl = "https://sixflags.team/tm/tm/schedulegrid/";
 
@@ -83,7 +83,7 @@ namespace O8SS_WebRequest
             {
                 new KeyValuePair<string, string>("ddc1", "1"),
                 new KeyValuePair<string, string>("ddd1", ""),
-                new KeyValuePair<string, string>("ddd2", ""),
+                new KeyValuePair<string, string>("ddd2", (parkServices && area.Key == -1) ? "11" : ""),
                 new KeyValuePair<string, string>("ddl1", ""),
                 new KeyValuePair<string, string>("txtFrom", date),
                 new KeyValuePair<string, string>("txtTo", date),
@@ -126,14 +126,75 @@ namespace O8SS_WebRequest
 
             try
             {
+                string areaValue = area.Value;
+
+                if (string.IsNullOrEmpty(areaValue))
+                {
+                    if (parkServices)
+                    {
+                        areaValue = "Park Services";
+                    }
+                    else
+                    {
+                        areaValue = "";
+                    }
+                }
+
                 var response = await _client.PostAsync(scheduleUrl, formData);
                 var html = await response.Content.ReadAsStringAsync();
-                return ScheduleParser.ParseScheduleHtml(html, area.Value);
+                return ScheduleParser.ParseScheduleHtml(html, areaValue);
             }
             catch
             {
                 return new List<ScheduleEntry>();
             }
         }
+
+        public async Task<List<ScheduleEntry>> FetchRestroomScheduleAsync(List<ScheduleEntry> schedule)
+        {
+            string url = "https://sixflags.team/tm/hr/employeegrid/";
+
+            FormUrlEncodedContent formData = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("ddc1", "1"),
+                new KeyValuePair<string, string>("ddd1", "3"),
+                new KeyValuePair<string, string>("ddd2", "11"),
+                new KeyValuePair<string, string>("txtempid", ""),
+                new KeyValuePair<string, string>("txtpa", ""),
+                new KeyValuePair<string, string>("txtsearchssn", ""),
+                new KeyValuePair<string, string>("ddActive", "Active Only"),
+                new KeyValuePair<string, string>("ddcert", ""),
+                new KeyValuePair<string, string>("_gridA4B5AS45_FFB3B4_", "2"),
+                new KeyValuePair<string, string>("_hidpagingtotal", "338"),
+                new KeyValuePair<string, string>("_hidpagingcurrpage", "1"),
+                new KeyValuePair<string, string>("_hidpagingmaxpage", "4"),
+                new KeyValuePair<string, string>("txtpagecurrpage", "1"),
+                new KeyValuePair<string, string>("txtpagesize", "1000"),
+                new KeyValuePair<string, string>("_hiddentag", "grid")
+            });
+
+            try
+            {
+                HttpResponseMessage response = await _client.PostAsync(url, formData);
+                response.EnsureSuccessStatusCode();
+                string html = await response.Content.ReadAsStringAsync();
+
+                Dictionary<int, string> homes = ScheduleParser.ParseHomeLocationHtml(html);
+
+                if (homes.Count > 0)
+                {
+                    return ScheduleParser.CombineRestrooms(schedule, homes);
+                }
+            }
+            catch
+            {
+                //Console.WriteLine($"Error fetching certifications: {ex.Message}");
+                return schedule;
+            }
+
+            return schedule;
+        }
+
+
     }
 }
