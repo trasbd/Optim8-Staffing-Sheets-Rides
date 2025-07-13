@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="PRAGMA" content="NO-CACHE">
+    <meta http-equiv="Cache-control" content="No-Cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Schedule</title>
+
+  
+    <link href="/tm/Content/styles2.css?scriptv631" rel="stylesheet" />
+    <link href="/tm/Content/styles-iconmenu.css?scriptv631" rel="stylesheet" />
+
+    
+    <link href="/tm/Content/bootstrap533.css" rel="stylesheet" />
+    <script src="/tm/Scripts/bootstrap.533.bundle.min.js"></script>
+
+    <link href="/tm/Content/Styles-tab.css" rel="stylesheet" />
+
+    <link href="/tm/Content/zschedule.css?scriptv631" rel="stylesheet" />
+    <link href="/tm/Content/zshared.css?scriptv631" rel="stylesheet" />
+
+    <style type="text/css">
+        a {
+            color: darkblue;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <div class="bg">
+        <div class="content-box" title="">
+            <div id="divheaderfilterfold" class="headerfilterfold headerfilterfold1"></div>
+            <div id="divheaderhelp" class="headerfilterfold divhide">?</div>
+            <div class="divicon20 divhide">
+                <svg height="22px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" /></svg>
+            </div>
+            <div id="divheader" class="header0">
+                <div class="header11" id="header11">
+                    <div class="header21"></div>
+                    <div class="headertopright">
+                        <div class="headertopright1">
+                            <a id="atd" href="/tm/home/td">Training Documents</a>
+                            <span class="spanspace8"></span>
+                            <a id="aaupdates" href="#">All Upgrades to Date</a>
+                            <span class="spanspace8"></span>
+                            <a id="aahome" href="/tm/">Home</a>
+                            <span class="spanspace8"></span>
+                            <a id="aalogout" href="/tm/account/signout">Log Out</a>
+                            <br /><br />
+                            <a id="aauser" href="/tm/account/usr">sfsl / Madison Hogan</a>
+                        </div>
+                        <div class="headerbottomright">
+                            <svg height="32px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" /></svg>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="divbody">
+                    <form id="formbody">
+
+                        
+    <div class="divicon20">
+        <svg height="22px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" /></svg>
+    </div>
+    <div id="divcenter">
+
+        <div class="divsearch1 bc_sf">
+            <div class="divsearch2">
+                <div class="divsearchheader">Schedule</div>
+
+                <div id="divstructlist">
+    <label class='detaillabelnew' for='ddc1' id='lblddc1' name='lblddc1'>Company:</label> <select name="ddc1" id="ddc1" class='ddcdd form-select mb-1' ><option value=''></option><option value="1" selected >St. Louis</option> </select><br />
+    <label class='detaillabelnew' for='ddd1' id='lblddd1' name='lblddd1'>Division:</label> <select name="ddd1" id="ddd1" class='ddcdd form-select mb-1 hideschedule' ><option value=''></option><option value="5">Administration</option><option value="10">Alternative Staffing</option><option value="2">Finance</option><option value="8">Fulltime</option><option value="1">G M & Admin</option><option value="4">IPS</option><option value="6">Maintenance</option><option value="7">Marketing</option><option value="3" selected >Operations</option><option value="9">Payroll Use Only</option> </select><br />
+    <label class='detaillabelnew' for='ddd2' id='lblddd2' name='lblddd2'>Department:</label> <select name="ddd2" id="ddd2" class='ddcdd form-select mb-1' ><option value=''></option><option value="8">Admissions</option><option value="25">Arcade Att</option><option value="28">Hurricane Harbor</option><option value="2">Loss Prevention</option><option value="11">Park Services</option><option value="6" selected >Ride Operations</option><option value="17">Security</option><option value="9">Toll Plaza</option> </select><br />
+<label class='detaillabelnew' for='ddl1' id='lblddl1' name='lblddl1'>Location:</label> <select name="ddl1" id="ddl1" class='ddcdd form-select mb-1' ><option value=''></option><option value="12">1010 - Call in Relief Only</option><option value="436">1020 - Buccaneer</option><option value="13">1030 - Rookie Racer</option><option value="14">1040 - Log Flume</option><option value="15">1050 - Rides Clean-Up</option><option value="16">1060 - American Thunder</option><option value="17">1070 - Grand Ole Carousel</option><option value="524">1080 - Supergirl</option><option value="18">1091 - Catwoman Whip</option><option value="19">1100 - Thunder River</option><option value="20">1110 - Mr. Freeze</option><option value="21">1120 - Joker Carnival of Chaos</option><option value="22">1130 - Railroad</option><option value="23">1140 - Mine Train</option><option value="24">1150 - Screamin' Eagle</option><option value="25">1180 - Batman the Ride</option><option value="437">1190 - Shazam!</option><option value="26">1200 - Ops Dispatch</option><option value="27">1210 - Justice League: Battle For Metropolis</option><option value="28">1220 - Xcalibur</option><option value="29">1230 - Fireball</option><option value="30">1240 - Boomerang</option><option value="31">1260 - Rides Special Events</option><option value="438">1280 - Colossus</option><option value="32">1290 - Ninja</option><option value="33">1300 - Rides Supervisors</option><option value="34">1310 - Pandemonium</option><option value="439">1320 - BBNP North</option><option value="440">1330 - BBNP East</option><option value="441">1340 - BBNP West</option><option value="35">1410 - The Boss</option><option value="36">1420 - SkyScreamer</option><option value="37">1430 - Tsunami Soaker</option><option value="434">1440 - Spinsanity</option> </select></div>
+
+                <div class="divsearchfields" id="divfield1">
+                    <span class="asearchlink">
+                        <a href="#" id="aschedulebyemp">Schedule by Employee</a>
+                        <span>&nbsp;|&nbsp;</span>
+                        <a href="#" id="aunscheduled">Not Scheduled</a>
+                    </span>
+                    <span class="asearchlink" id="spansearchlink2">
+                        <a href="#" id="aschedulelog">Create and Post Log</a>
+                            <span>&nbsp;|&nbsp;</span>
+                            <a href="#" id="apostemail">Email Notice</a>
+                    </span>
+
+                        <span class="asearchlink" id="spansearchlink3">
+                            <a href="#" id="ast">Schedule Change Request</a>
+                        </span>
+                    <span class="asearchlink" id="spansearchlinkmod">
+                        <a href="#" id="amodschedule">MOD Schedule</a>
+                    </span>
+                        <span class="asearchlink divhide" id="spansearchlink4">
+                            <a href="#" id="arecover">Recover Schedules</a>
+                        </span>
+
+                    <label for="txtFrom" id="lblfrom" class="  form-label">Date From:</label>
+                    <input id="txtFrom" name="txtFrom" type="text" maxlength="10" class="form-control mb-1" value="7/12/2025" />
+                    <label for="txtTo" id="lblto" class="  form-label">To:</label>
+                    <input id="txtTo" name="txtTo" type="text" maxlength="10" value="7/12/2025" class="form-control" />
+                    <label class='form-label' for='ddarea' id='lblddarea' name='lblddarea' >Area:</label> <select name="ddarea" id="ddarea" class="form-select form-inline"><option value=''></option></select>
+                    <br />
+                    <label class='form-label' for='ddEmpFrom' id='lblddEmpFrom' name='lblddEmpFrom' >Employee From:</label> <select name="ddEmpFrom" id="ddEmpFrom"  class="form-select form-inline width150"><option value="Company">Company</option><option value="Division">Division</option><option value="Department" selected >Department</option><option value="Other Company">Other Company</option> </select>
+
+                    <label class='form-label' for='ddns' id='lblddns' name='lblddns' >&nbsp;</label> <select name="ddns" id="ddns"  class="form-select form-inline width150"><option value="" selected ></option><option value="Employees Not Scheduled">Employees Not Scheduled</option><option value="Certified Only">Certified Only</option><option value="Validated Only">Validated Only</option> </select>
+
+                    <select id="ddview" name="ddview" opt="" class="form-select form-inline width100 me-2">
+                        <option value="date">Date View</option>
+                        <option value="chart">Chart View</option>
+                        <option value="shift">Shift View</option>
+                    </select>
+                    <br />
+
+                    <label class="form-label" id="lblddfilter">Filter:</label>
+                    <select id="ddfilter" name="ddfilter" class="form-select form-inline width100 ">
+                        <option>All Schedules</option>
+                        <option>Selected</option>
+                    </select>&nbsp;
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="cccheckedin" name="cccheckedin" class="ccode form-check-input border border-1 border-dark" /><label for="cccheckedin" class=" form-label cc cccheckedin">Checked In</label>
+                    </div>
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="cclate" name="cclate" class="ccode form-check-input border border-1 border-dark" /><label for="cclate" class="form-label cc cclate">Late</label>
+                    </div>
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+
+                        <input type="checkbox" id="ccminor" name="ccminor" class="ccode form-check-input border border-1 border-dark" /><label for="ccminor" class="form-label cc ccminor">Minor</label>
+                    </div>
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="ccposted" name="ccposted" class="ccode form-check-input border border-1 border-dark" /><label for="ccposted" class="form-label cc ccposted">Posted</label>
+                    </div>
+                    <div class="form-check ms-3 me-1 mb-1 form-inline ">
+                        <input type="checkbox" id="ccvalidate" name="ccvalidate" class="ccode form-check-input border border-1 border-dark mt-2" />
+                        <select for="ccvalidate" id="ddvalidate" name="ddvalidate" class="form-select form-inline  ccvalidate">
+                            <option value="all">All Violations</option>
+                            <option>Call-in</option>
+                            <option>Employee is suspended</option>
+                            <option>Employee is inactive</option>
+                            <option>Location is inactive</option>
+                            <option>Time off</option>
+                            <option value="Overlap to">Shift overlap</option>
+                                <option>Compliance rule violation</option>
+                            <option>Overtime</option>
+                            <option>Not certified</option>
+                            <option>Not available</option>
+
+                            <option>Approved drop and trade</option>
+                            <option>Minimum required hours not met</option>
+                        </select>
+                    </div>
+                    <br />
+                    <button id="divgo" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+                    <button id="divexport" class="btn btn-outline-primary">Export</button>
+
+                        <button id="divcreate" class="btn btn-outline-primary">
+                            Create
+                        </button>
+                        <button id="divcreateblank" class="btn btn-outline-primary">
+                            Create Blank
+                        </button>
+                        <button id="divcreateemp" class="btn btn-outline-primary">
+                            Find Employee
+                        </button>
+                        <button id="divcopy" class="btn btn-outline-primary">
+                            Copy
+                        </button>
+                        <button id="divvalidate" class="btn btn-outline-primary">
+                            Validate
+                        </button>
+                        <button id="divAdd" class="btn btn-outline-primary">
+                            Add
+                        </button>
+                        <button id="divpost" class="btn btn-outline-primary">
+                            Post
+                        </button>
+                            <button id="btnupdatetime" class="btn btn-outline-primary">Update Time</button>
+                        <input type="hidden" id="hidupdate" value="update" />
+                </div>
+                <div class="divsearchfields divhide" id="divfield2">
+                    <br />
+                    <label class=" form-label" id="lblfrom2">Date From:</label>
+                    <input id="txtFrom2" name="txtFrom2" type="text" maxlength="10" class="form-control mb-1" value="7/7/2025" /> 
+                    <label class=" form-label" id="lblto2">To:</label>
+                    <input id="txtTo2" name="txtTo2" type="text" maxlength="10" class="form-control" value="7/13/2025" />
+                    &nbsp;
+                    <label class='form-label' for='ddschedulefrom' id='lblddschedulefrom' name='lblddschedulefrom' >Show Schedule From:</label> <select name="ddschedulefrom" id="ddschedulefrom"  class="form-select form-inline"><option value="Department">Department</option><option value="Position" selected >Position</option> </select><br />
+                    <label class=" form-label" id="lbltxtemployeeid2" for="txtemployeeid2">Employee:</label>
+                    <input id="txtemployeeid2" class="form-control mb-1" name="txtemployeeid2" maxlength="10" />
+                    <label class='form-label' for='ddarea2' id='lblddarea2' name='lblddarea2' >Area:</label> <select name="ddarea2" id="ddarea2" class="form-select form-inline"><option value=''></option></select>
+                    &nbsp;&nbsp;
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="chkactiveonly2" name="chkactiveonly2" class="form-check-input border border-1 border-dark" checked="checked" /><label for="chkactiveonly2" class=" form-label">Active Employee Only</label>
+                    </div>
+                    
+                    <br />
+                    <button id="btngo2" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+
+                    <button id="btnexport2" class="btn btn-outline-primary widthmin50">Export</button>
+
+                    <a href="#" id="aschedule" class="asearchlink">Schedule</a>
+                </div>
+                <div class="divsearchfields divhide" id="divfield3">
+                    <span></span>
+                    <br />
+                    <label class=" form-label">From Date:</label>
+                    <input id="txtdate3" name="txtdate3" type="text" class="form-control mb-1" maxlength="10" value="7/7/2025" />
+
+                    <label class=" form-label" id="lbltxtdate32">To:</label>
+                    <input id="txtdate32" name="txtdate32" type="text" class="form-control" maxlength="10" value="7/7/2025" />
+
+                    <br />
+                    <label class='form-label' for='ddcert3' id='lblddcert3' name='lblddcert3' >Certification: </label> <select name="ddcert3" id="ddcert3" class="form-select form-inline mb-1"><option value=''></option></select>
+                    
+                    <br />
+                    <button id="btngo3" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+
+                    <button id="btnexport3" class="btn btn-outline-primary widthmin50">Export</button>
+                    <a href="#" id="aschedule3" class="asearchlink">Schedule</a>
+
+                </div>
+                <div class="divsearchfields divhide" id="divfield4">
+
+                    <br />
+                    <label class="form-label">Schedule Date:</label>
+                    <input id="txtdate4" name="txtdate4" type="text" class="form-control mb-1" maxlength="10" value="7/12/2025" />
+
+                    <label class='form-label' for='ddlogtype' id='lblddlogtype' name='lblddlogtype' >Type:</label> <select name="ddlogtype" id="ddlogtype"  class="form-select form-inline"><option value="" selected ></option><option value="Create">Create</option><option value="Create Blank">Create Blank</option><option value="Find Employee">Find Employee</option><option value="Copy">Copy</option><option value="Post">Post</option> </select><br />
+
+                    <a href="#" id="aschedule4" class="asearchlink">Schedule</a>
+
+                    <button id="btngo4" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+                    <button id="btnexport4" class="btn btn-outline-primary widthmin50">Export</button>
+                </div>
+                <div class="divsearchfields divhide" id="divfield5">
+                    <br />
+                    <label class="form-label">Employee ID:</label>
+                    <input type="text" id="txtemployeeid5" name="txtemployeeid5" class="form-control mb-1" maxlength="10" />
+
+                    <label class='form-label' for='ddtype5' id='lblddtype5' name='lblddtype5' >Type:</label> <select name="ddtype5" id="ddtype5"  class="form-select form-inline"><option value="" selected ></option><option value="D">Drop And Cover Schedule Requests</option><option value="T">Trade Requests</option><option value="P">Pending Trade Requests</option><option value="R">Requests To Pickup Unassigned Schedule</option> </select><br />
+
+                    <label for="txtFrom" id="lblfrom5" class="form-label">Schedule Date From:</label>
+                    <input id="txtdate5" name="txtdate5" type="text" maxlength="10" class="form-control mb-1" value="7/13/2025" />
+                    <label for="txtTo" id="lblto" class="form-label">To:</label>
+                    <input id="txtdate52" name="txtdate52" type="text" maxlength="10" value="" class="form-control" /> 
+                   
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="chksttobeprocessed" name="chksttobeprocessed" value="1" class="form-check-input border border-1 border-dark" checked /><label for="chksttobeprocessed" class=" form-label">To Be Processed Only</label>
+                    </div>
+                     <br />
+                    <a href="#" id="aschedule5" class="asearchlink">Schedule</a>
+                   
+                    <button id="btngo5" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+                    <button id="btngo52" class="btn btn-outline-primary widthmin50">
+                        Process Selected
+                    </button>
+                    <button id="btngo53" class="btn btn-outline-primary widthmin50">
+                        Validate
+                    </button>
+                </div>
+                <div class="divsearchfields divhide" id="divfield6">
+                    <span></span>
+                    <br />
+                    <label id="lblfrom6" class="form-label">Email Created Date:</label>
+                    <input id="txtdate6" name="txtdate6" type="text" maxlength="10" class="form-control mb-1" value="7/7/2025" />
+                    <label for="txtTo" id="lblto" class="form-label">To:</label>
+                    <input id="txtdate62" name="txtdate62" type="text" class="form-control" maxlength="10" value="" />
+
+                    <div class="form-check ms-3 me-1 mb-1 form-inline">
+                        <input type="checkbox" id="chktobesentemail" name="chktobesentemail" class="form-check-input border border-1 border-dark" /><label for="chksttobeprocessed" class=" form-label">To Be Sent Only</label>
+                    </div>
+                    <br />
+                    <a href="#" id="aschedule6" class="asearchlink">Schedule</a>
+                    <span class="spanspace"></span>
+                    <button id="btn btn-outline-primary widthmin50" class="buttondiv">
+                        Go
+                    </button>
+                    <button id="btn btn-outline-primary widthmin50" class="buttondiv">
+                        Send Email
+                    </button>
+                </div>
+                <div class="divsearchfields divhide" id="divfield7"> 
+                    <br /> 
+                    <label class='detaillabel' for='ddsbktime' id='lblddsbktime' name='lblddsbktime' >Backup Time:</label><span class='spanDetailField'> <select name="ddsbktime" id="ddsbktime" class=""><option value=''></option></select></span><br />
+                    <label class='detaillabel' for='txtschedulerecoverdate' id='lbltxtschedulerecoverdate' name='lbltxtschedulerecoverdate' >Schedule Date From:</label><span class='spanDetailField'><input type="text" id="txtschedulerecoverdate" name="txtschedulerecoverdate" style="width: 80px" value="" maxlength='10'  /></span>
+                    <label class='detaillabel' for='txtschedulerecoverdate2' id='lbltxtschedulerecoverdate2' name='lbltxtschedulerecoverdate2' >To:</label><span class='spanDetailField'><input type="text" id="txtschedulerecoverdate2" name="txtschedulerecoverdate2" style="width: 80px" value="" maxlength='10'  /></span><br />
+
+                    <a href="#" id="aschedule7" class="asearchlink">Schedule</a>
+
+                    <button id="btngo7" class="btn btn-outline-primary widthmin50">Go</button>
+                        <button id="btnsbkrecover" class="btn btn-outline-primary widthmin50">Recover Selected Schedules</button>
+                </div>
+                <div class="divsearchfields divhide" id="divfield8"> 
+                    <br />
+                    <label id="lblfrom8" class="form-label">From Date:</label>
+                    <input id="txtdate8" name="txtdate8" type="text" class="form-control mb-1" maxlength="10" value="7/7/2025" />
+                    <label for="txtdate82" id="lblto8" class="form-label">To:</label>
+                    <input id="txtdate82" name="txtdate82" type="text" class="form-control" maxlength="10" value="8/3/2025" />
+                     
+
+                    <a href="#" id="aschedule8" class="asearchlink">Schedule</a>
+                    <br />
+                    <button id="btngo8" class="btn btn-outline-primary widthmin50">
+                        Go
+                    </button>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="divgrid0">
+            <div id="divgrid">
+            </div>
+        </div>
+        <div id="divgridst0" class="divhide">
+            <div id="divdroprequest" class="divhide">
+                <div class="divrequesttype">
+                    Drop And Cover Schedule Requests
+                </div>
+                <div class="divrequestgrid">
+
+                </div><br />
+            </div>
+            <div id="divtradereqreuest" class="divhide">
+                <div class="divrequesttype">
+                    Trade Requests
+                </div>
+                <div class="divrequestgrid">
+
+                </div><br />
+            </div>
+            <div id="divtradereqreuest2" class="divhide">
+                <div class="divrequesttype">
+                    Pending Trade Requests
+                </div>
+                <div class="divrequestgrid">
+
+                </div><br />
+            </div>
+            <div id="divpickupreuest" class="divhide">
+                <div class="divrequesttype">
+                    Requests To Pickup Unassigned Schedule
+                </div>
+                <div class="divrequestgrid">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+                        <input type="hidden" id="_hiddentag" name="_hiddentag" value="" />
+
+                    </form>
+            </div>
+        </div>
+
+        <div id="divfooter">
+            <div id="ajaxstatus1"></div>
+            <a id="aahome2" href="/tm/">Home</a>&nbsp;|&nbsp;<a href="/#contact">Contact Us</a>&nbsp;|&nbsp;<a href="/tm/account/signout">Log Out</a>
+            &nbsp;&nbsp;&nbsp;
+            Copyright © 2013 Optim8.com. All rights reserved.
+            <div id="divupdate"><span>2.247.0</span><span class="divhide">&nbsp;|&nbsp;<span id="spantimeout"></span></span></div>
+        </div>
+
+    </div>
+
+
+    <div id='divhelpbubble' class='divhelpbubble' style='display: none;'></div>
+
+    <div id='divicons' style='display: none;'></div>
+    <input type="hidden" value='/tm/' id="hidroot" />
+    <input type="hidden" value="7/12/2025" id="hidcurrdate" />
+    <input type="hidden" value="content/pic/logo2.png" id="hidcompanylogo" />
+    <input type="hidden" value="m/d/yyyy" id="hidshortdatepattern" />
+
+    
+    <input type="hidden" id="hidautovalidate" value="0" />
+    <div id='divemployeelist' class="divhide"></div>
+    <div id='divempinfo' class="divhide"></div>
+    <div id="divschedulenote" class="divhide">
+        <textarea row='6' id='txtschedulenote'></textarea><br /><br />
+        <button id='btnschedulenotesubmit' class='buttondiv'>Submit</button>
+        <button id='btnschedulenotecancel' class='buttondiv'>Cancel</button>
+    </div>
+    <div id="divcopyschedule" class="divpopupedit">
+        <div class="divpopheaderline" id="divcs">
+            Copy Schedule
+        </div>
+        <label class='detaillabel' for='txtdatecopy1' id='lbltxtdatecopy1' name='lbltxtdatecopy1' >From Date:</label><span class='spanDetailField'><input type="text" id="txtdatecopy1" name="txtdatecopy1" style="width: 80px" value="" maxlength='10'  /></span><br />
+        <label class='detaillabel' for='txtdatecopy2' id='lbltxtdatecopy2' name='lbltxtdatecopy2' >To Date:</label><span class='spanDetailField'><input type="text" id="txtdatecopy2" name="txtdatecopy2" style="width: 80px" value="" maxlength='10'  /></span><br />
+        <div class="divpopbottomline">
+            <button id="btncopayschedule" class="buttondiv">OK</button>
+            <button id="btncopayschedulecancel" class="buttondiv">Cancel</button>
+        </div>
+    </div>
+    <div id="divupdatetime" class="divpopupedit">
+        <div class="divpopheaderline" id="divupdatetime1">
+            Update Schedule Time
+        </div>
+        <label class='detaillabel' for='ddtimetype' id='lblddtimetype' name='lblddtimetype' ></label><span class='spanDetailField'> <select name="ddtimetype" id="ddtimetype"  class=""><option value="Start Time" selected >Start Time</option><option value="End Time">End Time</option> </select></span><br />
+        <label class='detaillabel' for='txtutime1' id='lbltxtutime1' name='lbltxtutime1' >From Time:</label><span class='spanDetailField'><input type="text" id="txtutime1" name="txtutime1" style="width: 80px" value="" maxlength='10'  /></span><br />
+        <label class='detaillabel' for='txtutime2' id='lbltxtutime2' name='lbltxtutime2' >To Time:</label><span class='spanDetailField'><input type="text" id="txtutime2" name="txtutime2" style="width: 80px" value="" maxlength='10'  /></span><br />
+        <div class="divpopbottomline">
+            <button id="btncopayschedule" class="buttondiv">OK</button>
+            <button id="btncopayschedulecancel" class="buttondiv">Cancel</button>
+        </div>
+    </div>
+    <form id="formpop">
+        <div id="divchangetime" class="divpopupedit">
+            <div class="divpopheaderline">
+            </div>
+            <label class='detaillabel' for='ddDivision3' id='lblddDivision3' name='lblddDivision3' >Division:</label><span class='spanDetailField'> <select name="ddDivision3" id="ddDivision3" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddDept3' id='lblddDept3' name='lblddDept3' >Department:</label><span class='spanDetailField'> <select name="ddDept3" id="ddDept3" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddLocation3' id='lblddLocation3' name='lblddLocation3' >Location:</label><span class='spanDetailField'> <select name="ddLocation3" id="ddLocation3" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddPosition3' id='lblddPosition3' name='lblddPosition3' >Position:</label><span class='spanDetailField'> <select name="ddPosition3" id="ddPosition3" class="ddcdd"><option value=''></option></select></span><br />
+
+            <label class='detaillabel' for='txtDate1' id='lbltxtDate1' name='lbltxtDate1' >Date:</label><span class='spanDetailField'><input type="text" id="txtDate1" name="txtDate1" style="width: 80px" value="" maxlength='10'  /></span><br />
+
+            <label class='detaillabel' for='txtStart1' id='lbltxtStart1' name='lbltxtStart1' >Start Time:</label><span class='spanDetailField'><input type="text" id="txtStart1" name="txtStart1" style="width: 80px" value="" maxlength='10'  /></span><br />
+            <label class='detaillabel' for='txtStop1' id='lbltxtStop1' name='lbltxtStop1' >Stop Time:</label><span class='spanDetailField'><input type="text" id="txtStop1" name="txtStop1" style="width: 80px" value="" maxlength='10'  /></span><br />
+            <label class='detaillabel' for='txtBreak1' id='lbltxtBreak1' name='lbltxtBreak1' >Break (Min):</label><span class='spanDetailField'><input type="text" id="txtBreak1" name="txtBreak1" style="width: 60px" value="" maxlength='3'  /></span>
+            <span class="spanspace"></span>
+            <a id="aaddsb" href="#">Add Break Time</a><br />
+            <div id="divsb">
+                <div class="divsbtemplate divhide">
+                    <select id="ddsbtype" class="sbtype">
+                        <option value="m">Meal Break</option>
+                        <option value="r">Rest Break</option>
+                    </select>
+                    <span class="spanspace8"></span>
+                    <label class="labelbold">From:</label>
+                    <span class="spanspace8"></span>
+                    <input type="text" class="sbstart" />
+                    <span class="spanspace8"></span>
+                    <label class="labelbold">To:</label>
+                    <span class="spanspace8"></span>
+                    <input type="text" class="sbstop" />
+                    <span class="spanspace8"></span>
+                    <a class="adeletesb" href="#">Delete</a>
+                </div>
+            </div>
+
+            <input type="hidden" id="hid" name="hid" />
+            <input type="hidden" id="hidbt" name="hidbt" />
+            <div class="divpopbottomline">
+                    <button id="divpopsave" class="buttondiv">Save</button>
+                    <button id="divpopdelete" class="buttondiv">Delete</button>
+                <button id="divpopcancel" class="buttondiv">Cancel</button>
+            </div>
+
+
+        </div>
+    </form>
+
+    <form id="formpop1">
+        <div id="divaddschedule" class="divpopupedit">
+            <div class="divpopheaderline">
+            </div>
+            <label class='detaillabel' for='txtAddDate' id='lbltxtAddDate' name='lbltxtAddDate' >Date:</label><span class='spanDetailField'><input type="text" id="txtAddDate" name="txtAddDate" value="" maxlength='10'  /></span>
+            &nbsp;&nbsp;<a href="#" id="atsdate">Add Date</a><br />
+            <span id="spantsdate" class="divhide">
+            </span>
+            <label class='detaillabel' for='ddDivision2' id='lblddDivision2' name='lblddDivision2' >Division:</label><span class='spanDetailField'> <select name="ddDivision2" id="ddDivision2" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddDept2' id='lblddDept2' name='lblddDept2' >Department:</label><span class='spanDetailField'> <select name="ddDept2" id="ddDept2" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddLocation2' id='lblddLocation2' name='lblddLocation2' >Location:</label><span class='spanDetailField'> <select name="ddLocation2" id="ddLocation2" class="ddcdd"><option value=''></option></select></span><br />
+            <label class='detaillabel' for='ddPosition2' id='lblddPosition2' name='lblddPosition2' >Position:</label><span class='spanDetailField'> <select name="ddPosition2" id="ddPosition2" class="ddcdd"><option value=''></option></select></span><br />
+
+            <label class='detaillabel' for='txtAddStart' id='lbltxtAddStart' name='lbltxtAddStart' >Start Time:</label><span class='spanDetailField'><input type="text" id="txtAddStart" name="txtAddStart" style="width: 80px" value="" maxlength='10'  /></span><br />
+            <label class='detaillabel' for='txtAddStop' id='lbltxtAddStop' name='lbltxtAddStop' >Stop Time:</label><span class='spanDetailField'><input type="text" id="txtAddStop" name="txtAddStop" style="width: 80px" value="" maxlength='10'  /></span><br />
+            <label class='detaillabel' for='txtAddBreak' id='lbltxtAddBreak' name='lbltxtAddBreak' >Break (Min):</label><span class='spanDetailField'><input type="text" id="txtAddBreak" name="txtAddBreak" style="width: 60px" value="" maxlength='3'  /></span><br />
+            <div id="divempa">
+                <label class="detaillabel">Employee ID:</label>&nbsp;
+                <div class="asemp" id="asemp1"></div>
+                &nbsp;&nbsp;<a href="#" id="atsemployee">Add Employee or Open Shift</a><br />
+                <span id="spantsemployeea">
+                </span>
+            </div>
+             <table cellspacing='0'><tr><td class='tdtextarealabel'><label class='detaillabel' id='lbltxtAddNote' for='txtAddNote' >Note:</label> </td><td class='tdtextarea'><textarea id=txtAddNote name=txtAddNote rows=3 class=></textarea></td></tr></table>
+            <input type="hidden" id="hidadd" name="hidadd" />
+            <input type="hidden" id="hidadd2" name="hidadd2" />
+            <div class="divpopbottomline">
+                <button id="divpopsave1" class="buttondiv">Save</button>
+                <button id="divpopcancel1" class="buttondiv">Cancel</button>
+            </div>
+        </div>
+    </form>
+    <div id="divstapproval" class="divpopupedit">
+        <form id="formstapproval">
+            <div class="divpopheaderline">
+            </div>
+            <label class='detaillabel' for='txtapprovalnote' id='lbltxtapprovalnote' name='lbltxtapprovalnote' >Reason:</label><span class='spanDetailField'><input type="text" id="txtapprovalnote" name="txtapprovalnote" value="" maxlength='200'  /></span><br />
+            <label class="detaillabel chklabel1" name="chksendemaillabel1"  id="chksendemaillabel1">&nbsp;</label><span class="spanDetailField" id='spanchkchksendemail'><input id="chksendemail" type="checkbox" name="chksendemail" value='1' checked='checked' /><label name="chksendemaillabel2" id="chksendemaillabel2" class="chklabel2" for="chksendemail">Send Email Notice</label></span><br />
+
+            <div class="divpopbottomline">
+                <button id="btnstapprove" name="btnstapprove" class="buttondiv">Approve</button>
+                <button id="btnstdeny" name="btnstdeny" class="buttondiv">Deny</button>
+                <button id="btnstcancel" name="btnstcancel" class="buttondiv">Cancel</button>
+            </div>
+            <input type="hidden" id="hidstid" name="hidstid" />
+        </form>
+    </div>
+
+ 
+    <script src="/tm/Scripts/jquery-1.9.1.min.js?scriptv631"></script>
+    <script src="/tm/Scripts/jquery-ui.js?scriptv631"></script>
+    <script src="/tm/Scripts/jquery.plugin.fg.2.js?scriptv631"></script>
+    <script src="/tm/Scripts/script_common.2.js?scriptv631"></script>
+    <script src="/tm/Scripts/menu2.js?scriptv631"></script>
+
+
+    
+    <script src="/tm/scripts/zschedule.js?scriptv631"></script>
+
+</body>
+</html>

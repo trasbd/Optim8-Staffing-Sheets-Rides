@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optim8 Staffing Sheets Rides", "Optim8 Staffing Sheets\Optim8 Staffing Sheets Rides.csproj", "{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "O8SS-WebRequest", "O8SS-WebRequest\O8SS-WebRequest.csproj", "{819AA285-CD41-4074-8C6F-442EA578EDA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +17,15 @@ Global
 		{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F305F805-4AA9-47FA-82B6-C0BE719DD1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819AA285-CD41-4074-8C6F-442EA578EDA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819AA285-CD41-4074-8C6F-442EA578EDA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819AA285-CD41-4074-8C6F-442EA578EDA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819AA285-CD41-4074-8C6F-442EA578EDA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E09F72BF-BFEB-4077-B0A0-E9D5B785FD9D}
 	EndGlobalSection
 EndGlobal

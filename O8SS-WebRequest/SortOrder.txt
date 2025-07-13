@@ -1,0 +1,34 @@
+1010 - Call in Relief Only
+1050 - Rides Clean-Up
+1200 - Ops Dispatch
+1260 - Rides Special Events
+1300 - Rides Supervisors
+1410 - The Boss
+1030 - Rookie Racer
+1120 - Joker Carnival of Chaos
+1080 - Supergirl
+1100 - Thunder River
+1070 - Grand Ole Carousel
+1310 - Pandemonium
+1340 - BBNP West
+1150 - Screamin' Eagle
+1320 - BBNP North
+1091 - Catwoman Whip
+1240 - Boomerang
+1230 - Fireball
+1420 - SkyScreamer
+1140 - Mine Train
+1330 - BBNP East
+1130 - Railroad
+1220 - Xcalibur
+1040 - Log Flume
+1060 - American Thunder
+1110 - Mr. Freeze
+1210 - Justice League: Battle For Metropolis
+1280 - Colossus
+1190 - Shazam!
+1180 - Batman the Ride
+1440 - Spinsanity
+1430 - Tsunami Soaker
+1290 - Ninja
+1020 - Buccaneer
