@@ -1,63 +1,65 @@
 # 🎢 Optim8 Staffing Sheets (Web Request Edition)
 
-This project automates the generation of staffing sheets from the SixFlags.team scheduling portal, replacing the old Selenium-based tool with a faster and more reliable approach using direct HTTP requests.
+This WinForms tool generates staffing sheets from the [SixFlags.team](https://sixflags.team) scheduling portal, replacing the legacy Selenium-based version with a faster, more reliable system using direct HTTP requests.
 
 ## 🚀 Features
 
-- 🔒 Login directly to scheduling site
-- 📅 Fetch schedule data by date and area
-- 📍 Load and customize location sort order
-- 📄 Export formatted Excel staffing sheets (ClosedXML)
-- 📦 Self-contained WinForms UI with drag-and-drop location sorting
+- 🔒 Secure login with "Remember Me" option (credentials encrypted per-user)
+- 📅 Fetch schedules by **area and date** using `POST` requests
+- 📍 Editable drag-and-drop **location ordering** (with optional file override via `SortOrder.txt`)
+- 👷 Intelligent grouping of employees by **location and shift** (day/swing/night)
+- 👶 Automatic highlighting of underage employees (yellow shading)
+- 🚽 Optional **Restroom Merge Mode** (for Park Services only)
+- 🧠 Location-based sort order and park-specific logic built-in
+- 📄 Exports to a formatted Excel file with **group headers**, **bold restrooms**, and **shift grouping**
+- 📂 Outputs saved in `GeneratedStaffingSheets/` folder with timestamped filenames
 
-<!--
-## 🖼️ Screenshots
-
-*(Add screenshots of the main form, location editor, and sample Excel output here)*
--->
 ## 🧠 How It Works
 
-1. **Login** using your Company ID, Username, and Password
-2. **Select an Area** and Date
-3. **Fetch Schedule** data via `POST` request (no browser automation)
-4. **Parse HTML** into structured `ScheduleEntry` objects
-5. **Sort Entries** by preferred location order (`SortOrder.txt`)
-6. **Export to Excel**, with support for:
-   - Day/Swing/Night shifts
-   - Age tags (yellow shading)
+1. **Login** with Company, Username, and Password
+2. **Pick a date and area**
+3. **Fetch Schedule** via `POST` to SixFlags.team
+4. **Parse HTML** into `ScheduleEntry` objects (includes time parsing, tags, and shift detection)
+5. **Sort entries** based on UI-reordered or file-based location order
+6. **Export to Excel** using ClosedXML with intelligent formatting
 
 ## 📁 Folder Structure
 
 ```
 O8SS-WebRequest/
-├── Form1.cs               # Main UI logic and login workflow
-├── ScheduleService.cs     # Handles GET/POST to sixflags.team
-├── ScheduleParser.cs      # Converts HTML to structured data
-├── ScheduleExporter.cs    # Generates Excel using ClosedXML
-├── ScheduleEntry.cs       # Models a schedule row and employee info
-├── LocationOptionsForm.cs # Lets user drag-and-drop location order
-├── SortOrder.txt          # User-defined location ordering
-└── ...
+├── Form1.cs               # Main UI and login logic
+├── ScheduleService.cs     # Handles GET/POST web requests
+├── ScheduleParser.cs      # Parses HTML responses into data objects
+├── ScheduleEntry.cs       # Models schedule and employee data
+├── ScheduleExporter.cs    # Outputs Excel staffing sheet
+├── LocationOptionsForm.cs # Drag-and-drop location editor
+├── SortOrder.txt          # (Optional) override location sort order
+└── AboutForm.cs           # Shows build date version info
 ```
 
-## ⚙️ Requirements
+## 📦 Requirements
 
 - .NET Framework 4.8
-- [ClosedXML](https://github.com/ClosedXML/ClosedXML) (for Excel export)
-- [HtmlAgilityPack](https://html-agility-pack.net/) (for HTML parsing)
+- [ClosedXML](https://github.com/ClosedXML/ClosedXML)
+- [HtmlAgilityPack](https://html-agility-pack.net/)
 
 ## 🛠️ Setup & Usage
 
-1. **Build the solution** in Visual Studio 2019 or newer.
-2. Place `SortOrder.txt` next to the executable to define your preferred location order.
-3. Run the app, log in, select an area + date, and hit **Go**.
+1. Open and build the solution in **Visual Studio 2019+**
+2. Run the app and log in using your credentials
+3. Select a date and area, then click **Go**
+4. If desired, click **Options** to change the location order
+5. The Excel file will auto-open and be saved to:
 
-✅ The Excel file will be saved to a `GeneratedStaffingSheets` folder next to the `.exe`.
+```
+GeneratedStaffingSheets/yyyy-MM-dd_Area_YYYYMMDD-HHmmss.xlsx
+```
 
 ## ✏️ Notes
 
-- Location order is saved and shared across all users via `SortOrder.txt`.
-- Locations can be reordered via drag-and-drop using the **Options** window.
+- **Restroom grouping** mode (checkbox) pulls additional employee data and merges restrooms back into home locations.
+- **Drag-and-drop ordering** is saved to `SortOrder.txt` for reuse.
+- Park Services and Rides have separate built-in default location orders.
 
 ## 📜 License
 
@@ -65,4 +67,4 @@ MIT — see `LICENSE.md`
 
 ---
 
-📬 Questions, issues, or feedback? Feel free to open an issue!
+📬 Questions, issues, or feedback? Open an issue or contact the maintainer.
