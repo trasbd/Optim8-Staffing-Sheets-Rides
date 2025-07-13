@@ -14,7 +14,7 @@ namespace O8SS_WebRequest
 
             string Area = entries.FirstOrDefault()?.Area;
             string ScheduleDate = entries.FirstOrDefault()?.StartDateTime.ToString("M/d/yyyy");
-            
+
 
             if (string.IsNullOrEmpty(filePath))
             {
@@ -23,12 +23,17 @@ namespace O8SS_WebRequest
                     .ToArray());
 
                 string ScheduleDateNumbers = entries.FirstOrDefault()?.StartDateTime.ToString("yyyy-MM-dd");
-                string filename = $"Schedule_{ScheduleDateNumbers}_{cleanArea}_{DateTime.Now:yyyyMMdd-HHmmss}.xlsx";
+                string filename = $"{ScheduleDateNumbers}_{cleanArea}_{DateTime.Now:yyyyMMdd-HHmmss}.xlsx";
 
+                string subfolder = "GeneratedStaffingSheets"; // define the subfolder name
                 string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+                string fullDir = Path.Combine(exeDir, subfolder);
 
-                filePath = Path.Combine(exeDir, filename);
+                Directory.CreateDirectory(fullDir); // ensures folder exists
+
+                filePath = Path.Combine(fullDir, filename);
             }
+
 
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Schedule");
