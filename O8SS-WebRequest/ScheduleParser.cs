@@ -15,11 +15,7 @@ namespace O8SS_WebRequest
             doc.LoadHtml(WebUtility.HtmlDecode(html));
 
             var rows = doc.DocumentNode.SelectNodes("//tr[@rowid]") ?? Enumerable.Empty<HtmlNode>();
-
             var list = new List<ScheduleEntry>();
-
-         
-
 
             foreach (var row in rows)
             {
@@ -27,68 +23,69 @@ namespace O8SS_WebRequest
                 if (cells == null)
                     continue;
 
-                var chunks = cells
-                    .Select((cell, index) => new { cell, index })
-                    .GroupBy(x => x.index / 15); // 15 fields per schedule
+                // Map by fldName directly. If a duplicate fldName exists, 
+                // this takes the first one to avoid Dictionary insertion crashes.
+                var cellMap = cells
+                    .GroupBy(c => c.GetAttributeValue("fldName", ""))
+                    .Where(g => !string.IsNullOrEmpty(g.Key))
+                    .ToDictionary(g => g.Key, g => g.First());
 
-                foreach (var chunk in chunks)
+                // Verify the ID column exists and isn't empty (filters out "Total Hours" rows)
+                if (!cellMap.TryGetValue("id", out var idCell) || string.IsNullOrWhiteSpace(idCell.InnerText))
+                    continue;
+
+                // Helper lambda to safely extract and decode text from the dictionary map
+                string GetInnerText(string key) =>
+                    cellMap.TryGetValue(key, out var cell) ? WebUtility.HtmlDecode(cell.InnerText.Trim()) : "";
+
+                // Safely extract the date1 cell reference for attribute harvesting
+                cellMap.TryGetValue("date1", out var dateCell);
+
+                var entry = new ScheduleEntry
                 {
-                    var map = chunk.ToDictionary(
-                        x => x.cell.GetAttributeValue("fldName", ""),
-                        x => x.cell.InnerText.Trim());
+                    RowId = SafeParseInt(GetInnerText("id")),
+                    DepartmentId = SafeParseInt(GetInnerText("deptid")),
+                    Area = area,
+                    LocationId = SafeParseInt(GetInnerText("locationid")),
+                    DepartmentName = GetInnerText("deptname"),
+                    LocationName = GetInnerText("locationname"),
+                    PositionName = GetInnerText("positionname"),
+                    Sequence = SafeParseInt(GetInnerText("sequence")),
+                    TimeRange = GetInnerText("time"),
+                    Date = dateCell?.GetAttributeValue("date", "") ?? "",
+                    Note = dateCell != null ? WebUtility.HtmlDecode(dateCell.GetAttributeValue("note", "")) : "",
+                    EmployeeInfo = new EmployeeData(GetInnerText("date1"))
+                };
 
-                    if (!map.ContainsKey("id") || string.IsNullOrEmpty(map["id"]))
-                        continue; // Skip junk rows (like "Total Hours")
-
-                    var entry = new ScheduleEntry
+                // --- TIME PARSING LOGIC ---
+                if (DateTime.TryParse(entry.Date, out var baseDate))
+                {
+                    var timeParts = entry.TimeRange.Split('-');
+                    if (timeParts.Length == 2)
                     {
-                        RowId = SafeParseInt(map.ContainsKey("id") ? map["id"] : ""),
-                        DepartmentId = SafeParseInt(map.ContainsKey("deptid") ? map["deptid"] : ""),
-                        Area = area,
-                        LocationId = SafeParseInt(map.ContainsKey("locationid") ? map["locationid"] : ""),
-                        DepartmentName = map.ContainsKey("deptname") ? WebUtility.HtmlDecode(map["deptname"]) : "",
-                        LocationName = map.ContainsKey("locationname") ? WebUtility.HtmlDecode(map["locationname"]) : "",
-                        PositionName = map.ContainsKey("positionname") ? WebUtility.HtmlDecode(map["positionname"]) : "",
-                        Sequence = SafeParseInt(map.ContainsKey("sequence") ? map["sequence"] : ""),
-                        TimeRange = map.ContainsKey("time") ? WebUtility.HtmlDecode(map["time"]) : "",
-                        EmployeeInfo = new EmployeeData(map.ContainsKey("date1") ? WebUtility.HtmlDecode(map["date1"]) : "")
-                    };
+                        var startTimeStr = timeParts[0].Trim();
+                        var endTimeStr = timeParts[1].Trim();
 
-
-                    var dateCell = chunk.FirstOrDefault(x => x.cell.GetAttributeValue("fldName", "") == "date1")?.cell;
-                    entry.Date = dateCell?.GetAttributeValue("date", "") ?? "";
-
-                    if (DateTime.TryParse(entry.Date, out var baseDate))
-                    {
-                        var timeParts = entry.TimeRange.Split('-');
-                        if (timeParts.Length == 2)
+                        if (DateTime.TryParse($"{entry.Date} {startTimeStr}", out var startDateTime) &&
+                            DateTime.TryParse($"{entry.Date} {endTimeStr}", out var endDateTime))
                         {
-                            var startTimeStr = timeParts[0].Trim();
-                            var endTimeStr = timeParts[1].Trim();
-
-                            if (DateTime.TryParse($"{entry.Date} {startTimeStr}", out var startDateTime) &&
-                                DateTime.TryParse($"{entry.Date} {endTimeStr}", out var endDateTime))
+                            // Handle overnight shifts (e.g., 10:15 PM - 3:00 AM)
+                            if (endDateTime < startDateTime)
                             {
-                                // Handle end time being after midnight
-                                if (endDateTime < startDateTime)
-                                {
-                                    endDateTime = endDateTime.AddDays(1);
-                                }
-
-                                entry.StartDateTime = startDateTime;
-                                entry.EndDateTime = endDateTime;
+                                endDateTime = endDateTime.AddDays(1);
                             }
+
+                            entry.StartDateTime = startDateTime;
+                            entry.EndDateTime = endDateTime;
                         }
                     }
-
-                    list.Add(entry);
                 }
+
+                list.Add(entry);
             }
 
             return list;
         }
-
-
 
         public static List<KeyValuePair<int, string>> ParseAreas(string html)
         {
@@ -110,23 +107,50 @@ namespace O8SS_WebRequest
 
             return result;
         }
+        public static Dictionary<string, int> ParseLocationOptions(string html)
+        {
+            // Simply pass the specific dropdown ID "ddl1" into your combined parser
+            return ParseDropDownToDictionary(html, dropdownId: "ddl1");
+        }
 
-        public static BindingList<string> ParseLocationOptions(string html)
-        { 
+        public static Dictionary<string, int> ParseDropDownToDictionary(string html, string dropdownId = null)
+        {
             var doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(html);
 
-            var options = doc.DocumentNode
-                .SelectNodes("//select[@id='ddl1']/option")
-                ?.Where(opt => !string.IsNullOrWhiteSpace(opt.InnerText))
-                .Select(opt => WebUtility.HtmlDecode(opt.InnerText.Trim()))
-                .ToList();
+            var result = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-            return new BindingList<string>(options) ?? new BindingList<string>();
+            // 1. Decide how to grab the options: 
+            //    If a specific dropdown ID is requested, look inside that select element.
+            //    Otherwise, default to searching for any loose <option> elements (like API responses).
+            string xpath = string.IsNullOrEmpty(dropdownId)
+                ? "//option"
+                : $"//select[@id='{dropdownId}']/option";
+
+            var options = doc.DocumentNode.SelectNodes(xpath);
+            if (options == null) return result;
+
+            // 2. Loop through and build the dictionary safely
+            foreach (var option in options)
+            {
+                var value = option.GetAttributeValue("value", "").Trim();
+                var name = System.Net.WebUtility.HtmlDecode(option.InnerText.Trim());
+
+                if (!string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(name))
+                {
+                    if (!result.ContainsKey(name))
+                    {
+                        if (int.TryParse(value, out int id))
+                        {
+                            result.Add(name, id);
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
-
-        
 
         public static Dictionary<int, string> ParseHomeLocationHtml(string html)
         {
@@ -159,7 +183,7 @@ namespace O8SS_WebRequest
 
         public static List<ScheduleEntry> CombineRestrooms(List<ScheduleEntry> schedule, Dictionary<int, string> homes)
         {
-            
+
             foreach (var restroomSchedule in schedule.FindAll(x => x.LocationName.Contains("Restroom")))
             {
                 restroomSchedule.Restroom = true;

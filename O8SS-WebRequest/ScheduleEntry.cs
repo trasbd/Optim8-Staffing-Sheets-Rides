@@ -21,6 +21,7 @@ namespace O8SS_WebRequest
         public string TimeRange { get; set; }
         public string Date { get; set; }
         public int ScheduleId { get; set; }
+        public string Note { get; set; }
         public EmployeeData EmployeeInfo { get; set; }
 
         public DateTime StartDateTime { get; set; }

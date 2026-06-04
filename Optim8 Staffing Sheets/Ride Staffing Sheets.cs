@@ -71,8 +71,8 @@ namespace Optim8_Staffing_Sheets
 
                         wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-                        // Go to sixflags.team
-                        driver.Navigate().GoToUrl("http://sixflags.team");
+                        // Go to {baseDomain}
+                        driver.Navigate().GoToUrl("http://{baseDomain}");
 
                         wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("alogin1"))).Click();
 
@@ -103,7 +103,7 @@ namespace Optim8_Staffing_Sheets
                     }
 
                     // After login, go to scheduling page
-                    driver.Navigate().GoToUrl("http://sixflags.team/tm/tm/schedule");
+                    driver.Navigate().GoToUrl("http://{baseDomain}/tm/tm/schedule");
 
                     WebDriverWait pageWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 

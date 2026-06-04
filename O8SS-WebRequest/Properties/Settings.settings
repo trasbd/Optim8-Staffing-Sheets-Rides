@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SavedCompany" Type="System.String" Scope="User">
-      <Value Profile="(Default)">sfsl</Value>
+      <Value Profile="(Default)">EPSL</Value>
     </Setting>
     <Setting Name="SavedUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="SavedAreaId" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="SavedNotes" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

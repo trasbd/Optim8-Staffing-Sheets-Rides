@@ -60,7 +60,7 @@
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(360, 23);
             this.labelCopyright.TabIndex = 2;
-            this.labelCopyright.Text = "© 2025 Thomas Robert";
+            this.labelCopyright.Text = "© 2026 Thomas Robert";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonOK

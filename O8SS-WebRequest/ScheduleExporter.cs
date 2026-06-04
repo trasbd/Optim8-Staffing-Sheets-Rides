@@ -9,7 +9,7 @@ namespace O8SS_WebRequest
 {
     public class ScheduleExporter
     {
-        public static void ExportToExcel(List<ScheduleEntry> entries, string filePath, List<string> locationOrder, bool parkServices)
+        public static void ExportToExcel(List<ScheduleEntry> entries, string filePath, List<string> locationOrder, bool includeNotes, bool parkServices = false)
         {
 
             string Area = entries.FirstOrDefault()?.Area;
@@ -91,7 +91,8 @@ namespace O8SS_WebRequest
                     {
                         var cell = ws.Cell(row + i, 1);
                         var shift = dayShift[i];
-                        cell.Value = $"{shift.StartDateTime:hh:mm tt}-{shift.EndDateTime:hh:mm tt} {shift.Name}";
+                        bool hasNote = includeNotes && !string.IsNullOrWhiteSpace(shift.Note);
+                        cell.Value = $"{shift.StartDateTime:hh:mm tt}-{shift.EndDateTime:hh:mm tt} {shift.Name}{(hasNote? $" - {shift.Note}": "") } ";
                         cell.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
 
                         if (shift.Age == AgeGroup.YellowTag)

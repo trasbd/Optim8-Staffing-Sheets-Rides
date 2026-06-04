@@ -60,7 +60,8 @@ namespace O8SS_WebRequest
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            BindingList<string> newList = await _scheduleService.FetchLocations();
+            Dictionary<string, int> locations = await _scheduleService.FetchLocationsAsync();
+            BindingList<string> newList = new BindingList<string>(locations.Keys.ToList());
 
             _editable.Clear(); // Clear the current list to fire ListChanged events
 

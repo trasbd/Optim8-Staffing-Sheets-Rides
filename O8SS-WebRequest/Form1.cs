@@ -18,8 +18,10 @@ namespace O8SS_WebRequest
     {
         private readonly ScheduleService _service;
 
-        private string _LocaitonsFileName = "SortOrder.txt";
-        private BindingList<string> Locations = new BindingList<string>();
+        private const string LOCATION_FILE_NAME = "SortOrder.txt";
+        private const string ADDL_AC_FILE_NAME = "AdditionalAC.txt";
+        private BindingList<string> LocationsSortOrder = new BindingList<string>();
+        private BindingList<string> AdditionalLocations = new BindingList<string>();
 
         private bool _updateSavedArea = false;
 
@@ -66,23 +68,31 @@ namespace O8SS_WebRequest
             {
                 CookieContainer = cookies,
                 UseCookies = true,
-                AllowAutoRedirect = true
+                AllowAutoRedirect = true,
             };
 
             var client = new HttpClient(handler);
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
             client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
+            client.Timeout = TimeSpan.FromSeconds(30);
 
             _service = new ScheduleService(client);
 
 
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = Path.Combine(exeDir, _LocaitonsFileName);
+            string filePath = Path.Combine(exeDir, LOCATION_FILE_NAME);
 
             if (File.Exists(filePath))
             {
-                Locations = new BindingList<string>(File.ReadAllLines(filePath).ToList());
+                LocationsSortOrder = new BindingList<string>(File.ReadAllLines(filePath).ToList());
             }
+
+            filePath = Path.Combine(exeDir, ADDL_AC_FILE_NAME);
+            if (File.Exists(filePath))
+            {
+                AdditionalLocations = new BindingList<string>(File.ReadAllLines(filePath).ToList());
+            }
+
 
             if(checkBoxRememberMe.Checked)
             {
@@ -95,7 +105,7 @@ namespace O8SS_WebRequest
         {
             bool rememberMe = Properties.Settings.Default.SavedRemember;
             
-            txtCompany.Text = string.IsNullOrEmpty(Properties.Settings.Default.SavedCompany) ? "sfsl" : Properties.Settings.Default.SavedCompany;
+            txtCompany.Text = string.IsNullOrEmpty(Properties.Settings.Default.SavedCompany) ? "epsl" : Properties.Settings.Default.SavedCompany;
             txtID.Text = Properties.Settings.Default.SavedUsername ?? "";
 
             string base64 = Properties.Settings.Default.SavedPassword;
@@ -121,6 +131,7 @@ namespace O8SS_WebRequest
             }
 
             checkBoxPS.Checked = Properties.Settings.Default.SavedPS;
+            NotesCheckBox.Checked = Properties.Settings.Default.SavedNotes;
 
             return rememberMe;
         }
@@ -137,12 +148,17 @@ namespace O8SS_WebRequest
                 return;
             }
 
+            
+
             await AttemptLogin();
+
+            
 
         }
 
         private async Task AttemptLogin()
         {
+            Enabled = false;
             if (await _service.PerformLoginAsync(txtCompany.Text, txtID.Text, txtPass.Text))
             {
                 //MessageBox.Show("Login successful!");
@@ -157,6 +173,8 @@ namespace O8SS_WebRequest
             {
                 MessageBox.Show("Login failed.");
             }
+
+            Enabled = true;
         }
 
         private async Task<List<KeyValuePair<int, string>>> SortAreasAsync()
@@ -197,27 +215,30 @@ namespace O8SS_WebRequest
 
             _updateSavedArea = false;
             // Now populate the ComboBox
-            comboBox1.DisplayMember = "Value";
-            comboBox1.ValueMember = "Key";
-            comboBox1.DataSource = areas;
+            AreaComboBox.DisplayMember = "Value";
+            AreaComboBox.ValueMember = "Key";
+            AreaComboBox.DataSource = areas;
 
-            comboBox1.SelectedValue = Properties.Settings.Default.SavedAreaId;
+            AreaComboBox.SelectedValue = Properties.Settings.Default.SavedAreaId;
 
-            AdjustComboBoxDropDownWidth(comboBox1);
+            AdjustComboBoxDropDownWidth(AreaComboBox);
 
             _updateSavedArea = true;
+
+            UpdateUiState();
 
             return areas;
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            List<ScheduleEntry> schedule = await _service.FetchScheduleAsync(dtpDate.Value.ToString("M/d/yyyy"), (KeyValuePair<int, string>)comboBox1.SelectedItem, checkBoxPS.Checked);
+            Enabled = false;
+            List<ScheduleEntry> schedule = await _service.FetchScheduleAsync(dtpDate.Value.ToString("M/d/yyyy"), (KeyValuePair<int, string>)AreaComboBox.SelectedItem, checkBoxPS.Checked, AdditionalLocations);
 
             if (schedule.Count > 0)
             {
                 //MessageBox.Show($"Fetched {schedule.Count} schedule entries.");
-                var locationOrder = Locations.ToList();
+                var locationOrder = LocationsSortOrder.ToList();
 
                 if (checkBoxPS.Checked)
                 {
@@ -228,13 +249,15 @@ namespace O8SS_WebRequest
 
                 
                 
-                ScheduleExporter.ExportToExcel(schedule, "", locationOrder, checkBoxPS.Checked);
+                ScheduleExporter.ExportToExcel(schedule, "", locationOrder, NotesCheckBox.Checked, checkBoxPS.Checked);
 
             }
             else
             {
                 MessageBox.Show("No schedule entries found.");
             }
+
+            Enabled = true;
         }
 
         void AdjustComboBoxDropDownWidth(ComboBox comboBox)
@@ -254,35 +277,19 @@ namespace O8SS_WebRequest
             comboBox.DropDownWidth = maxWidth + SystemInformation.VerticalScrollBarWidth;
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            var optionsForm = new LocationOptionsForm(_service, Locations);
-            if (optionsForm.ShowDialog() == DialogResult.OK)
-            {
-                // Apply: replace Locations with updated list
-                Locations = new BindingList<string>(optionsForm.UpdatedList.ToList());
-
-                string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-                string filePath = Path.Combine(exeDir, _LocaitonsFileName);
-
-                File.WriteAllLines(filePath, Locations);
-
-            }
-            else
-            {
-                // Cancel: do nothing
-            }
-        }
-
         private void UpdateUiState()
         {
-            button2.Enabled = _loggedIn;
-            button4.Enabled = _loggedIn && !checkBoxPS.Checked;
-            comboBox1.Enabled = _loggedIn;
+            GoButton.Enabled = _loggedIn;
+            SortOptionsButton.Enabled = _loggedIn && !checkBoxPS.Checked;
+            AddlACOptionsButton.Enabled = _loggedIn && !checkBoxPS.Checked;
+            AreaLabel.Enabled = AreaComboBox.Items.Count > 0;
+            AreaComboBox.Enabled = AreaComboBox.Items.Count > 1;
             dtpDate.Enabled = _loggedIn;
+            NotesCheckBox.Enabled = _loggedIn;
             checkBoxPS.Enabled = _loggedIn;
             checkBoxRestrooms.Enabled = _loggedIn && checkBoxPS.Checked;
-            button1.Enabled = !_loggedIn;
+            LoginButton.Enabled = !_loggedIn;
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -321,13 +328,18 @@ namespace O8SS_WebRequest
 
             Properties.Settings.Default.SavedRemember = checkBoxRememberMe.Checked;
             Properties.Settings.Default.SavedPS = checkBoxPS.Checked;
+            Properties.Settings.Default.SavedNotes = NotesCheckBox.Checked;
 
             Properties.Settings.Default.Save();
+
+            
         }
 
         private void checkBoxPS_CheckedChanged(object sender, EventArgs e)
         {
             checkBoxRestrooms.Visible = checkBoxPS.Checked;
+            _service.IsParkServices = checkBoxPS.Checked;
+
             LoggedIn = LoggedIn;
             if (LoggedIn)
             {
@@ -336,14 +348,57 @@ namespace O8SS_WebRequest
             }
 
             
+
+            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_updateSavedArea)
             {
-                Properties.Settings.Default.SavedAreaId = (int)comboBox1.SelectedValue;
+                Properties.Settings.Default.SavedAreaId = (int)AreaComboBox.SelectedValue;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var optionsForm = new LocationOptionsForm(_service, LocationsSortOrder);
+            if (optionsForm.ShowDialog() == DialogResult.OK)
+            {
+                // Apply: replace Locations with updated list
+                LocationsSortOrder = new BindingList<string>(optionsForm.UpdatedList.ToList());
+
+                string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+                string filePath = Path.Combine(exeDir, LOCATION_FILE_NAME);
+
+                File.WriteAllLines(filePath, LocationsSortOrder);
+
+            }
+            else
+            {
+                // Cancel: do nothing
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var optionsForm = new AdditionalACOptionsForm(_service, AdditionalLocations);
+            var ret = optionsForm.ShowDialog();
+            if (ret == DialogResult.OK)
+            {
+                // Apply: replace Locations with updated list
+                AdditionalLocations = new BindingList<string>(optionsForm.UpdatedList.ToList());
+
+                string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+                string filePath = Path.Combine(exeDir, ADDL_AC_FILE_NAME);
+
+                File.WriteAllLines(filePath, AdditionalLocations);
+
+            }
+            else
+            {
+                // Cancel: do nothing
             }
         }
     }

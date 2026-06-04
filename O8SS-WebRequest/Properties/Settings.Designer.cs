@@ -25,7 +25,7 @@ namespace O8SS_WebRequest.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("sfsl")]
+        [global::System.Configuration.DefaultSettingValueAttribute("EPSL")]
         public string SavedCompany {
             get {
                 return ((string)(this["SavedCompany"]));
@@ -92,6 +92,18 @@ namespace O8SS_WebRequest.Properties {
             }
             set {
                 this["SavedAreaId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SavedNotes {
+            get {
+                return ((bool)(this["SavedNotes"]));
+            }
+            set {
+                this["SavedNotes"] = value;
             }
         }
     }
